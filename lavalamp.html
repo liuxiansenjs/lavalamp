@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<style>
+			*, *:before, *:after {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			img { border: 0; }
+
+			ul,li { list-style: none }
+
+			.background {
+				background: #01204F;
+			}
+			.clearfix {
+				overflow: hidden;
+			}
+			.lavalamp {
+				position: relative;
+				width: 984px;
+				margin: 0 auto;
+			}
+			.lavalamp li {
+				float: left;
+			}
+
+			.lavalamp li.active {
+				background: #CC0000; 
+			}
+
+			.lavalamp-object {
+				background: #CC0000;
+			}
+
+
+
+			.lavalamp li a {
+				position: relative;
+				z-index: 10;
+				display: block;
+				font-size: 14;
+				font-weight: 700;
+				font-family: sans-serif;
+				line-height: 40px;
+				color: #fff;
+				text-decoration: none;
+				padding: 0 10px;
+			}
+
+		</style>
+		<script src="../js/jquery-3.2.1.js"></script>
+	</head>
+	<body>
+		<div class="background clearfix">
+			<ul class="lavalamp">
+				<li class="active"><a href="javascript:;" style="padding: 0px 10px 0px 30px; background: url('icon-index_2c3bd00.png') no-repeat 6px 7px">首页</a></li>
+				<li><a href="javascript:;">败家</a></li>
+				<li><a href="javascript:;">国内</a></li>
+				<li><a href="javascript:;">国际</a></li>
+			</ul>
+		</div>
+		<script>
+			function lavaLamp(t) {
+				t = t ? t : 400;
+				$('.lavalamp').each(function() {
+					var self = this, $rootElement = $(self), $a = $rootElement.find('li a'), $li = $rootElement.find('li');
+					$('<div class="lavalamp-object"></div>').css({
+						'position': 'absolute',
+						'height': $a.innerHeight() + 'px',
+						'left': 0,
+					}).appendTo($rootElement);
+					
+					function calcWidth(where) {
+						var sum = 0;
+						where.prevAll().each(function() {
+							sum += $(this).innerWidth();
+						});
+						return sum;
+					}
+
+					function init() {
+						$('.lavalamp-object').css({
+							'width': $rootElement.find('li.active').innerWidth() + 'px',
+						})
+					}
+
+					init();
+
+					$a.mouseenter(function(e) {
+						var self = this;
+						$rootElement.find('.lavalamp-object').stop(true).animate({
+							'left': calcWidth($(self).parents('li')) + 'px',
+							'width': $(self).innerWidth() + 'px',
+						}, t);
+					});
+
+					$a.mouseleave(function(e) {
+						var self = this;
+						$rootElement.find('.lavalamp-object').stop(true).animate({
+							'left': calcWidth($rootElement.find('active')) + 'px',
+							'width': $rootElement.find('.active').innerWidth() + 'px',
+						}, t);
+					});
+
+
+
+
+				});
+			}
+
+			lavaLamp();
+
+		</script>
+	</body>
+</html>
